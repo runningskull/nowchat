@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+    <title>Chat Experiment</title>
+    
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+        }
+
+        #users {
+            position:       fixed;
+            left:           0;
+            border-right:   1px solid #ccc;
+            width:          200px;
+            padding:        20px;
+        }
+
+        #chat {
+            margin-left:    300px;
+        }
+
+        #log > div {
+            padding:        0.25em 0;
+            border-bottom:  1px dotted #ccc;
+        }
+
+        #log b {
+            display:        inline-block;
+            width:          120px;
+            font-size:      0.675em;
+            text-align:     right;
+            padding-right:  2em;
+            color:          #888;
+        }
+
+        #message {
+            margin-top: 2em;
+            position:   relative;
+        }
+
+        #msg {
+            width:      90%;
+            display:    block;
+        }
+
+        #send {
+            display:            inline-block;
+            text-align:         center;
+            background:         #999;
+            color:              #fff;
+            text-decoration:    none;
+            padding:            0.5em;
+
+            position:           absolute;
+            right:              0;
+            top:                0;
+            margin-right:       10px;
+        }
+    </style>
+</head>
+<body>
+    <ul id="users">
+    </ul>
+
+    <div id="chat">
+        <div id="log"></div>
+
+        <div id="message">
+            <input type="text" id="msg" />
+            <a href="#" id="send">Send</a>
+        </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://yourserver/nowjs/now.js"></script>
+    <script src="http://localhost:3000/nowjs/now.js"></script>
+
+    <script>
+        var _alpha = 'qwertyuiopasdfghjklzxcvbnm1234567890'
+        ,   rndlen = 6
+
+        function _rndStr() {
+            var i = rndlen
+            ,   out = ''
+            while(i--) {
+                out += _alpha[~~(Math.random()*_alpha.length)]
+            }
+            return out
+        }
+
+        now.name = 'Guest~' + _rndStr()
+
+        var logn = 0
+        $(document).ready(function() {
+            $('#log').css({maxHeight: $(window).height() - 100})
+
+            function _display(name, msg) {
+                var cls = logn % 2 ? 'even' : 'odd'
+                ,   html = '<div class="%"><b>#</b>$</div>'
+                                .replace('%', cls)
+                                .replace('$', msg)
+                                .replace('#', name)
+
+                $('#log').append(html)
+            }
+
+            now.displayMsg = _display
+
+            now.displayHistory = function(hist) {
+                hist || (hist = [])
+                var n = hist.length - 1
+                do {
+                    _display(hist[n].author, hist[n].msg)
+                } while(n--)
+            }
+
+
+            function _send(evt) {
+                evt.preventDefault()
+                var $msg = $('#msg')
+                now.distributeMsg($msg.val())
+                $msg.val('')
+            }
+
+            $('#send').on('click', _send)
+            $('#msg').on('keyup', function(evt) {
+                if (evt.keyCode == 13)
+                    _send(evt);
+            })
+
+            function _displayUsers(arr) {
+                var $users = $('#users')
+                $users.html('')
+                arr.forEach(function(u) {
+                    $users.append('<li>'+u+'</li>')
+                })
+            }
+
+            now.displayUsers = _displayUsers
+
+            now.ready(function() {
+                now.hello()
+            })
+        })
+    </script>
+</body>
+</html>
+
