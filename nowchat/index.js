@@ -7,8 +7,7 @@ var express = require('express')
   , everyone
 
   , Mongolian = require('mongolian')
-  , mongo = new Mongolian(config.mongo + '/admin')
-  , db = mongo.db('nowchat')
+  , db = new Mongolian(config.mongo + '/admin')
   , history, _allUsers=[]
 
 db.runCommand({createCollection: {create:'history', capped:true, size:10000}})
