@@ -23,7 +23,6 @@ app.use(express.static(__dirname + '/public'))
 
 var __all = function() {
   _allUsers = _.reduce(everyone.users, function(memo, val, key) {
-    console.log(memo, val, key)
     return (memo.push(val.now.name)), memo
   }, [])
 }
@@ -41,8 +40,8 @@ everyone.now.distributeMsg = function(msg) {
 
 everyone.now.hello = function() {
   var self = this
-  console.log('***', this.now.name)
   history.find().sort({$natural: -1}).limit(100).toArray(function(err, arr) {
+    console.log('~~~~', arr)
     self.now.displayHistory(arr)
   })
 }
