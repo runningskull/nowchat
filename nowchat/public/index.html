@@ -107,7 +107,7 @@
             now.displayMsg = _display
 
             now.displayHistory = function(hist) {
-                hist || (hist = [])
+                if (! (hist && hist.length)) return;
                 var n = hist.length - 1
                 while (n--) {
                     _display(hist[n].author, hist[n].msg)
