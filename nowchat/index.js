@@ -7,7 +7,7 @@ var express = require('express')
   , everyone
 
   , Mongolian = require('mongolian')
-  , mongo = new Mongolian(config.mongo)
+  , mongo = new Mongolian(config.mongo + '/admin')
   , db = mongo.db('nowchat')
   , history, _allUsers=[]
 
