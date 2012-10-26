@@ -3,3 +3,5 @@ www:
     approot: nowchat
     config:
         node_version: v0.8.x
+mongo:
+    type: mongodb
