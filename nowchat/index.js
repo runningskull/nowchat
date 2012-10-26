@@ -7,10 +7,9 @@ var express = require('express')
   , everyone
 
   , Mongolian = require('mongolian')
-  , db = new Mongolian(config.mongo + '/admin')
+  , db = new Mongolian(config.mongo ? config.mongo + '/admin' : 'localhost:27017/nowchat')
   , history, _allUsers=[]
 
-db.runCommand({createCollection: {create:'history', capped:true, size:10000}})
 history = db.collection('history')
 
 server.listen(8080), console.log('Listening on 3000')
@@ -40,7 +39,6 @@ everyone.now.distributeMsg = function(msg) {
 everyone.now.hello = function() {
   var self = this
   history.find().sort({$natural: -1}).limit(100).toArray(function(err, arr) {
-    console.log('~~~~', arr)
     self.now.displayHistory(arr)
   })
 }
