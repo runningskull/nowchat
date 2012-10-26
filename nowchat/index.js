@@ -35,6 +35,7 @@ function allUsers() {
 
 everyone.now.distributeMsg = function(msg) {
   everyone.now.displayMsg(this.now.name, msg)
+  console.log('inserting')
   history.insert({author:this.now.name, msg:msg})
 }
 
