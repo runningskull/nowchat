@@ -14,7 +14,7 @@ var express = require('express')
 db.runCommand({createCollection: {create:'history', capped:true, size:10000}})
 history = db.collection('history')
 
-server.listen(3000), console.log('Listening on 3000')
+server.listen(8080), console.log('Listening on 3000')
 everyone = require('now').initialize(server)
 
 
